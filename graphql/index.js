@@ -62,12 +62,22 @@ const server = new ApolloServer({
 exports.graphql = (event, lambdaContext, callback) => {
   // Playground handler
   if (event.httpMethod === 'GET') {
-    server.createHandler()(
+    server.createHandler({
+      cors: {
+        origin: '*',
+        credentials: true,
+      },
+    })(
       { ...event, path: event.requestContext.path || event.path },
       lambdaContext,
       callback,
     );
   } else {
-    server.createHandler()(event, lambdaContext, callback);
+    server.createHandler({
+      cors: {
+        origin: '*',
+        credentials: true,
+      },
+    })(event, lambdaContext, callback);
   }
 };
